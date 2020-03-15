@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>ResolverTests</AssemblyName>
+
+    <RootNamespace>ResolverTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

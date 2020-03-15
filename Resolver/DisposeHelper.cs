@@ -1,8 +1,8 @@
-﻿namespace Resolver
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace ResolverCore
+{
     public static class DisposeHelper
     {
         public static void Dispose(IDisposable disposable)

@@ -1,7 +1,7 @@
-﻿namespace Resolver
-{
-    using System;
+﻿using System;
 
+namespace ResolverCore
+{
     public class Resolvable : Attribute
     {
     }

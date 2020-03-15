@@ -1,8 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Threading.Tasks;
+using ResolverCore;
 
-namespace Resolver.Tests
+namespace ResolverTests
 {
     [TestClass]
     public class ResolverTests

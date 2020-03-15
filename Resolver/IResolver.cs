@@ -1,14 +1,15 @@
-﻿namespace Resolver
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace ResolverCore
+{
     public interface IResolver
     {
         void Register<T>(T objectValue);
 
         T Resolve<T>() where T : class;
         T Resolve<T>(Type t) where T : class;
+        void Map<From, To>();
 
         void ResolveProperties(object typedObject);
 
