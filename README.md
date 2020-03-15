@@ -5,6 +5,12 @@ The library is easy to adopt, works with .NET Standard and exposes a concise syn
 
 Read more about [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection).
 
+## Get Started
+
+Available on NuGet: [Resolver](https://www.nuget.org/packages/Resolver)
+
+NuGet Package Manager: `Install-Package Resolver`
+
 ## Contents
 
 * `Resolver` Can register a new dependency, build new objects and resolve their dependencies.
