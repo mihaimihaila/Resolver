@@ -1,10 +1,10 @@
-﻿namespace Resolver
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
+namespace Resolver
+{
     public class Resolver : IResolver
     {
         private class DependencyList : IDisposable
@@ -25,13 +25,15 @@
             }
         }
 
-        private Dictionary<Type, object> dependencies;
-        private Dictionary<TypeInfo, DependencyList> resolvableProperties;
+        private readonly Dictionary<Type, object> dependencies;
+        private readonly Dictionary<TypeInfo, DependencyList> resolvableProperties;
+        private readonly Dictionary<Type, Type> resolvableMapping;
 
         public Resolver()
         {
             dependencies = new Dictionary<Type, object>();
             resolvableProperties = new Dictionary<TypeInfo, DependencyList>();
+            resolvableMapping = new Dictionary<Type, Type>();
         }
 
         public void Register<T>(T objectValue)
@@ -57,6 +59,11 @@
 
         public void ResolveProperties(object typedObject)
         {
+            if (typedObject == null)
+            {
+                throw new ArgumentNullException(nameof(typedObject));
+            }
+
             var typeInfo = typedObject.GetType().GetTypeInfo();
             ResolveObjectProperties(typeInfo, typedObject);
         }
@@ -83,12 +90,12 @@
         private T GetNewObject<T>(TypeInfo typeInfo, string owner) where T : class
         {
             var constructor = typeInfo.DeclaredConstructors.First();
-            if (constructor.GetParameters().Count() != 0)
+            if (constructor.GetParameters().Length != 0)
             {
                 throw new InvalidOperationException($"Parameterless constructor needed in order to build object of type: {typeInfo.FullName} for owner: {owner}");
             }
 
-            var newObject = constructor.Invoke(new object[0]);
+            var newObject = constructor.Invoke(Array.Empty<object>());
 
             return (T)newObject;
         }
@@ -140,7 +147,13 @@
 
             foreach (var propertyMap in resolvableProperties[typeInfo].Resolvables)
             {
-                var resolvedPropertyObject = GetNewObject<object>(propertyMap.PropertyType.GetTypeInfo(), typeInfo.FullName);
+                var typeOfObject = propertyMap.PropertyType;
+                if (resolvableMapping.ContainsKey(typeOfObject))
+                {
+                    typeOfObject = resolvableMapping[typeOfObject];
+                }
+
+                var resolvedPropertyObject = GetNewObject<object>(typeOfObject.GetTypeInfo(), typeInfo.FullName);
                 ResolveProperties(resolvedPropertyObject);
 
                 propertyMap.SetValue(typedObject, resolvedPropertyObject);
@@ -152,6 +165,16 @@
             {
                 ResolveObjectProperties(baseType.GetTypeInfo(), typedObject);
             }
+        }
+
+        public void Map<From, To>()
+        {
+            if (!typeof(From).IsAssignableFrom(typeof(To)))
+            {
+                throw new ArgumentException();
+            }
+
+            resolvableMapping.Add(typeof(From), typeof(To));
         }
     }
 }

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RepositoryUrl>https://github.com/mihaimihaila/Resolver</RepositoryUrl>
+    <Authors>Mihai Mihaila</Authors>
+    <Company>Frenzy Games</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/mihaimihaila/Resolver</PackageProjectUrl>
+    <PackageTags>Dependency Injection</PackageTags>
+    <Description>Resolver helps you write loosely coupled code that is easy to change, compose and test. The library is easy to adopt, works with .NET Standard and exposes a concise syntax.</Description>
+  </PropertyGroup>
+
+</Project>
