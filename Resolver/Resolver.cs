@@ -14,8 +14,8 @@ namespace ResolverCore
 
             public void Dispose()
             {
-                DisposeHelper.ClearCollection(Resolvables);
-                Properties.Clear();
+                Resolvables?.Clear();
+                Properties?.Clear();
             }
 
             public DependencyList(Dictionary<PropertyInfo, object> properties, List<PropertyInfo> resolvables)

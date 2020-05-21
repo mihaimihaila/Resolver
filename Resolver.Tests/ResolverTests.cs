@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Threading.Tasks;
 using ResolverCore;
+using System;
 
 namespace ResolverTests
 {
@@ -9,7 +8,7 @@ namespace ResolverTests
     public class ResolverTests
     {
         [TestMethod]
-        public async Task Map_WhenResolvingDependency_ShouldResolveDependency()
+        public void Map_WhenResolvingDependency_ShouldResolveDependency()
         {
             var resolver = new Resolver();
             var result = resolver.Resolve<DummyClass>();
@@ -18,7 +17,7 @@ namespace ResolverTests
         }
 
         [TestMethod]
-        public async Task Map_WhenRegisteringIncorrectMappedDependency_ShouldVerifyThatTypesAreCompatible()
+        public void Map_WhenRegisteringIncorrectMappedDependency_ShouldVerifyThatTypesAreCompatible()
         {
             var resolver = new Resolver();
             try
@@ -32,14 +31,14 @@ namespace ResolverTests
         }
 
         [TestMethod]
-        public async Task Map_WhenRegisteringCorrectMappedDependency_ShouldVerifyThatTypesAreCompatible()
+        public void Map_WhenRegisteringCorrectMappedDependency_ShouldVerifyThatTypesAreCompatible()
         {
             var resolver = new Resolver();
             resolver.Map<DependencyParent, DependencyChild>();
         }
 
         [TestMethod]
-        public async Task Map_WhenResolvingMappedDependency_ShouldResolveDependency()
+        public void Map_WhenResolvingMappedDependency_ShouldResolveDependency()
         {
             var resolver = new Resolver();
             resolver.Map<DependencyParent, DependencyChild>();
