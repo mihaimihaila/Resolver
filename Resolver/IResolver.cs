@@ -13,7 +13,7 @@ namespace ResolverCore
 
         void ResolveProperties(object typedObject);
 
-        void ManipulateDependencies<T>(Action<T> manipulateDependency) where T : class;
-        void ManipulateDependencies<T>(Func<IEnumerable<T>, IEnumerable<T>> manipulateCollection, Action<T> manipulateDependency) where T : class;
+        void TransformDependencies<T>(Action<T> manipulateDependency) where T : class;
+        void TransformDependencies<T>(Func<IEnumerable<T>, IEnumerable<T>> manipulateCollection, Action<T> manipulateDependency) where T : class;
     }
 }

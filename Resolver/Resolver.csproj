@@ -12,8 +12,8 @@
     <PackageId>Resolver</PackageId>
     <AssemblyName>ResolverCore</AssemblyName>
     <RootNamespace>ResolverCore</RootNamespace>
-    <Version>1.0.2</Version>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Version>1.0.3</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>

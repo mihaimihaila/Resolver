@@ -68,22 +68,21 @@ namespace ResolverCore
             ResolveObjectProperties(typeInfo, typedObject);
         }
 
-        public void ManipulateDependencies<T>(Action<T> manipulateDependency) where T : class
+        public void TransformDependencies<T>(Action<T> transform) where T : class
         {
-            ManipulateDependencies(dependencies.Values.OfType<T>(), manipulateDependency);
+            TransformDependencies(dependencies.Values.OfType<T>(), transform);
         }
 
-        public void ManipulateDependencies<T>(Func<IEnumerable<T>, IEnumerable<T>> manipulateCollection, Action<T> manipulateDependency) where T : class
+        public void TransformDependencies<T>(Func<IEnumerable<T>, IEnumerable<T>> transformCollection, Action<T> transform) where T : class
         {
-            var manipuatedCollection = manipulateCollection(dependencies.Values.OfType<T>());
-            ManipulateDependencies(manipuatedCollection, manipulateDependency);
+            TransformDependencies(transformCollection(dependencies.Values.OfType<T>()), transform);
         }
 
-        private void ManipulateDependencies<T>(IEnumerable<T> collection, Action<T> manipulateDependency) where T : class
+        private void TransformDependencies<T>(IEnumerable<T> collection, Action<T> transform) where T : class
         {
             foreach (var dependency in collection)
             {
-                manipulateDependency(dependency);
+                transform(dependency);
             }
         }
 
