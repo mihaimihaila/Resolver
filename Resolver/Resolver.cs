@@ -47,7 +47,7 @@ namespace ResolverCore
             return Resolve<T>(type);
         }
 
-        public T Resolve<T>(Type type) where T : class
+        private T Resolve<T>(Type type) where T : class
         {
             var typeInfo = type.GetTypeInfo();
             var typedObject = GetNewObject<T>(typeInfo, "Resolver");
@@ -166,7 +166,7 @@ namespace ResolverCore
             }
         }
 
-        public void Map<From, To>()
+        public void Register<From, To>()
         {
             if (!typeof(From).IsAssignableFrom(typeof(To)))
             {

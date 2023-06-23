@@ -1,6 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ResolverCore;
-using System;
 
 namespace ResolverTests
 {
@@ -8,57 +8,98 @@ namespace ResolverTests
     public class ResolverTests
     {
         [TestMethod]
-        public void Map_WhenResolvingDependency_ShouldResolveDependency()
+        public void Resolve_WhenResolvingDependency_ShouldResolveDependency()
         {
+            // Arrange
             var resolver = new Resolver();
-            var result = resolver.Resolve<DummyClass>();
+
+            // Act
+            var result = resolver.Resolve<DummyClassWithResolvableProperty>();
+
+            // Assert
             Assert.IsNotNull(result.Field);
-            Assert.AreEqual(typeof(DependencyParent), result.Field.GetType());
+            Assert.AreEqual(typeof(DependencyImplementation), result.Field.GetType());
         }
 
         [TestMethod]
-        public void Map_WhenRegisteringIncorrectMappedDependency_ShouldVerifyThatTypesAreCompatible()
+        public void Resolve_WhenResolvingMappedDependency_ShouldResolveDependency()
         {
+            // Arrange
+            var resolver = new Resolver();
+            resolver.Register<IDependency, DependencyImplementation>();
+
+            // Act
+            var result = resolver.Resolve<DummyClassWithUnspecifiedProperty>();
+
+            // Assert
+            Assert.IsNotNull(result.Field);
+            Assert.AreEqual(typeof(DependencyImplementation), result.Field.GetType());
+        }
+
+        [TestMethod]
+        public void Register_WhenRegisteringCorrectMappedDependency_ShouldVerifyThatTypesAreCompatible()
+        {
+            // Arrange
+            var resolver = new Resolver();
+
+            // Act
+            resolver.Register<IDependency, DependencyImplementation>();
+
+            // Assert
+            // Did not crash
+        }
+
+        [TestMethod]
+        public void Register_WhenRegisteringIncoCorrectMappedDependency_ShouldVerifyThatTypesAreCompatible()
+        {
+            // Arrange
             var resolver = new Resolver();
             try
             {
-                resolver.Map<DependencyChild, DependencyParent>();
-                Assert.Fail();
+                // Act
+                resolver.Register<IDependency, Implementation>();
+                Assert.Fail("Should have thrown an ArgumentException");
             }
             catch (ArgumentException)
             {
             }
+
+            // Assert
+            // Assert.Fail was not called
         }
 
         [TestMethod]
-        public void Map_WhenRegisteringCorrectMappedDependency_ShouldVerifyThatTypesAreCompatible()
+        public void Register_WhenResolvingMappedDependency_ShouldResolveDependency()
         {
             var resolver = new Resolver();
-            resolver.Map<DependencyParent, DependencyChild>();
-        }
-
-        [TestMethod]
-        public void Map_WhenResolvingMappedDependency_ShouldResolveDependency()
-        {
-            var resolver = new Resolver();
-            resolver.Map<DependencyParent, DependencyChild>();
-            var result = resolver.Resolve<DummyClass>();
+            resolver.Register<IDependency, DependencyImplementation>();
+            var result = resolver.Resolve<DummyClassWithUnspecifiedProperty>();
             Assert.IsNotNull(result.Field);
-            Assert.AreEqual(typeof(DependencyChild), result.Field.GetType());
+            Assert.AreEqual(typeof(DependencyImplementation), result.Field.GetType());
         }
     }
 
-    class DummyClass
+    class DummyClassWithUnspecifiedProperty
     {
         [Resolvable]
-        public DependencyParent Field { get; set; }
+        public IDependency Field { get; set; }
     }
 
-    class DependencyParent
+    class DummyClassWithResolvableProperty
+    {
+        [Resolvable]
+        public DependencyImplementation Field { get; set; }
+    }
+
+    interface IDependency
     {
     }
 
-    class DependencyChild : DependencyParent
+    class DependencyImplementation : IDependency
+    {
+    }
+
+    class Implementation
     {
     }
 }
